@@ -1,0 +1,107 @@
+:root {
+    --bg-color: #000;
+    --text-color: #fff;
+    --nav-height: 45px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: rgb(33, 33, 33);
+    color: var(--text-color);
+    height: var(--nav-height);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.nav-logo a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1.5rem;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav-menu li {
+    margin: 0;
+}
+
+.nav-menu a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.hamburger div {
+    width: 24px;
+    height: 2px;
+    background-color: var(--text-color);
+}
+
+.content {
+    padding: 100px 20px; /* 콘텐츠 패딩 설정 */
+}
+
+.white-screen {
+    height: 300vh;
+    background-color: rgb(255, 255, 255);
+}
+
+
+@media (max-width: 50vw) {
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        top: var(--nav-height);
+        left: 0;
+        width: 100%;
+        background-color: var(--bg-color);
+        padding: 10px 0;
+    }
+
+    .nav-menu.open {
+        display: flex;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .content {
+        padding: 100px 20px;
+        margin-top: var(--nav-height);
+    }
+}
