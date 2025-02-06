@@ -507,53 +507,53 @@ var app = (function () {
     			div3 = element("div");
     			attr_dev(a0, "href", "#home");
     			attr_dev(a0, "class", "svelte-1oj47do");
-    			add_location(a0, file$3, 145, 30, 3046);
+    			add_location(a0, file$3, 48, 30, 1281);
     			attr_dev(div0, "class", "nav-logo svelte-1oj47do");
-    			add_location(div0, file$3, 145, 8, 3024);
+    			add_location(div0, file$3, 48, 8, 1259);
     			attr_dev(a1, "href", "#math");
     			attr_dev(a1, "class", "svelte-1oj47do");
-    			add_location(a1, file$3, 147, 16, 3148);
+    			add_location(a1, file$3, 50, 16, 1383);
     			attr_dev(li0, "class", "svelte-1oj47do");
-    			add_location(li0, file$3, 147, 12, 3144);
+    			add_location(li0, file$3, 50, 12, 1379);
     			attr_dev(a2, "href", "#science");
     			attr_dev(a2, "class", "svelte-1oj47do");
-    			add_location(a2, file$3, 148, 16, 3192);
+    			add_location(a2, file$3, 51, 16, 1427);
     			attr_dev(li1, "class", "svelte-1oj47do");
-    			add_location(li1, file$3, 148, 12, 3188);
+    			add_location(li1, file$3, 51, 12, 1423);
     			attr_dev(a3, "href", "#computer");
     			attr_dev(a3, "class", "svelte-1oj47do");
-    			add_location(a3, file$3, 149, 16, 3242);
+    			add_location(a3, file$3, 52, 16, 1477);
     			attr_dev(li2, "class", "svelte-1oj47do");
-    			add_location(li2, file$3, 149, 12, 3238);
+    			add_location(li2, file$3, 52, 12, 1473);
     			attr_dev(input, "type", "text");
     			attr_dev(input, "placeholder", "   검색어를 입력하세요...");
     			set_style(input, "display", /*isSearchOpen*/ ctx[1] ? 'block' : 'none');
     			attr_dev(input, "aria-label", "Search");
     			attr_dev(input, "class", "svelte-1oj47do");
-    			add_location(input, file$3, 151, 16, 3326);
+    			add_location(input, file$3, 54, 16, 1561);
     			if (!src_url_equal(img.src, img_src_value = "/images/search.png")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "search");
     			attr_dev(img, "class", "svelte-1oj47do");
-    			add_location(img, file$3, 153, 20, 3571);
+    			add_location(img, file$3, 56, 20, 1806);
     			attr_dev(button0, "aria-label", "Toggle search");
     			attr_dev(button0, "class", "svelte-1oj47do");
-    			add_location(button0, file$3, 152, 16, 3465);
+    			add_location(button0, file$3, 55, 16, 1700);
     			attr_dev(li3, "class", "search svelte-1oj47do");
-    			add_location(li3, file$3, 150, 12, 3290);
+    			add_location(li3, file$3, 53, 12, 1525);
     			attr_dev(ul, "class", ul_class_value = "nav-menu " + (/*isOpen*/ ctx[0] ? 'open' : '') + " svelte-1oj47do");
-    			add_location(ul, file$3, 146, 8, 3087);
+    			add_location(ul, file$3, 49, 8, 1322);
     			attr_dev(div1, "class", "svelte-1oj47do");
-    			add_location(div1, file$3, 158, 12, 3790);
+    			add_location(div1, file$3, 61, 12, 2025);
     			attr_dev(div2, "class", "svelte-1oj47do");
-    			add_location(div2, file$3, 159, 12, 3814);
+    			add_location(div2, file$3, 62, 12, 2049);
     			attr_dev(div3, "class", "svelte-1oj47do");
-    			add_location(div3, file$3, 160, 12, 3838);
+    			add_location(div3, file$3, 63, 12, 2073);
     			attr_dev(button1, "class", "hamburger svelte-1oj47do");
     			attr_dev(button1, "aria-label", "Toggle menu");
-    			add_location(button1, file$3, 157, 8, 3681);
+    			add_location(button1, file$3, 60, 8, 1916);
     			attr_dev(nav, "class", "navbar svelte-1oj47do");
-    			add_location(nav, file$3, 144, 4, 2995);
-    			add_location(main, file$3, 143, 0, 2984);
+    			add_location(nav, file$3, 47, 4, 1230);
+    			add_location(main, file$3, 46, 0, 1219);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -55861,8 +55861,8 @@ void main() {
     	const block = {
     		c: function create() {
     			div = element("div");
-    			attr_dev(div, "class", "container svelte-r1bwt7");
-    			add_location(div, file$2, 68, 2, 1996);
+    			attr_dev(div, "class", "container svelte-1rmbs5k");
+    			add_location(div, file$2, 113, 0, 3232);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -55891,6 +55891,9 @@ void main() {
     	return block;
     }
 
+    const currentDateTime = "2025-02-06 11:54:04";
+    const currentUser = "amuileum07";
+
     function instance$4($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Main_home_anime', slots, []);
@@ -55898,45 +55901,66 @@ void main() {
 
     	onMount(() => {
     		let scene, camera, renderer, center_sphere;
+    		let satellites = [];
 
     		function init() {
-    			// 장면(scene)을 생성
     			scene = new Scene();
-
-    			// 카메라를 생성
-    			camera = new PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-
-    			camera.position.z = 5;
-    			camera.position.y = 2.5; // 카메라 각도를 높임
-    			camera.lookAt(new Vector3(0, 0, 0)); // 카메라가 중앙을 바라보도록 설정
-
-    			// 렌더러(renderer)를 생성
+    			camera = new PerspectiveCamera(85, container.clientWidth / container.clientHeight, 0.1, 1000);
+    			camera.position.z = 10;
+    			camera.position.y = 6;
+    			camera.lookAt(new Vector3(0, 0, 0));
     			renderer = new WebGLRenderer({ antialias: true, alpha: true });
-
     			renderer.setSize(container.clientWidth, container.clientHeight);
     			container.appendChild(renderer.domElement);
-
-    			// 구형 기하학(geometry)과 재질(material)을 생성
-    			const geometry = new SphereGeometry(1, 32, 32);
-
+    			const geometry = new SphereGeometry(3, 32, 32);
     			const wireframe = new WireframeGeometry(geometry);
     			center_sphere = new LineSegments(wireframe);
     			center_sphere.material.depthTest = false;
     			center_sphere.material.opacity = 0.75;
     			center_sphere.material.transparent = true;
-    			center_sphere.material.color = new Color(0, 0.1, 0.4); // RGB 값을 사용하여 와이어프레임 색상을 파란색으로 설정
-
-    			// 구를 장면에 추가
+    			center_sphere.material.color = new Color(0, 0.1, 0.4);
     			scene.add(center_sphere);
+    			const satelliteGeometry = new SphereGeometry(1, 32, 32);
 
-    			// 렌더 루프
+    			const satelliteMaterial = new MeshBasicMaterial({
+    					color: new Color(0, 0.1, 0.4),
+    					wireframe: true
+    				});
+
+    			const orbits = [
+    				{ radius: 4, height: 3, speed: 0.015 },
+    				{ radius: 5, height: 0, speed: 0.02 },
+    				{ radius: 6, height: -3, speed: 0.025 }
+    			];
+
+    			orbits.forEach((orbit, i) => {
+    				const satellite = new Mesh(satelliteGeometry, satelliteMaterial);
+    				const angle = i * 2 * Math.PI / 3;
+
+    				satellites.push({
+    					mesh: satellite,
+    					angle,
+    					radius: orbit.radius,
+    					height: orbit.height,
+    					speed: orbit.speed
+    				});
+
+    				scene.add(satellite);
+    			});
+
     			function animate() {
     				requestAnimationFrame(animate);
-
-    				// 고정된 축을 중심으로 구를 회전
     				center_sphere.rotation.y += 0.01;
 
-    				// 장면을 렌더링
+    				satellites.forEach(satellite => {
+    					satellite.angle += satellite.speed;
+    					satellite.mesh.position.x = satellite.radius * Math.cos(satellite.angle);
+    					satellite.mesh.position.z = satellite.radius * Math.sin(satellite.angle);
+    					satellite.mesh.position.y = satellite.height;
+    					satellite.mesh.rotation.y += 0.02;
+    					satellite.mesh.rotation.x += 0.01;
+    				});
+
     				renderer.render(scene, camera);
     			}
 
@@ -55945,7 +55969,6 @@ void main() {
 
     		init();
 
-    		// 창 크기 조정 처리
     		window.addEventListener("resize", () => {
     			camera.aspect = container.clientWidth / container.clientHeight;
     			camera.updateProjectionMatrix();
@@ -55966,7 +55989,13 @@ void main() {
     		});
     	}
 
-    	$$self.$capture_state = () => ({ onMount, THREE, container });
+    	$$self.$capture_state = () => ({
+    		onMount,
+    		THREE,
+    		container,
+    		currentDateTime,
+    		currentUser
+    	});
 
     	$$self.$inject_state = $$props => {
     		if ('container' in $$props) $$invalidate(0, container = $$props.container);
