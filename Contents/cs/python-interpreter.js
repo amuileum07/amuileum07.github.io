@@ -208,13 +208,30 @@
 
             try {
                 const code = editor.getValue();
-                const packages = [];
-                if (code.includes("numpy")) packages.push("numpy");
-                if (code.includes("matplotlib")) packages.push("matplotlib");
+                
+                // General package detection
+                const importRegex = /import\s+([a-zA-Z0-9_.]+)/g;
+                const fromImportRegex = /from\s+([a-zA-Z0-9_.-]+)\s+import/g;
+                const packages = new Set();
+                let match;
 
-                if (packages.length > 0) {
-                    statusP.textContent = `패키지 로딩 중: ${packages.join(', ')}...`;
-                    await pyodide.loadPackage(packages);
+                while ((match = importRegex.exec(code)) !== null) {
+                    packages.add(match[1].split('.')[0]);
+                }
+
+                while ((match = fromImportRegex.exec(code)) !== null) {
+                    packages.add(match[1].split('.')[0]);
+                }
+
+                const packageMap = {
+                    "sklearn": "scikit-learn",
+                };
+
+                const packagesToLoad = Array.from(packages).map(p => packageMap[p] || p);
+
+                if (packagesToLoad.length > 0) {
+                    statusP.textContent = `패키지 로딩 중: ${packagesToLoad.join(', ')}...`;
+                    await pyodide.loadPackage(packagesToLoad);
                 }
 
                 statusP.textContent = "코드 실행 중...";
