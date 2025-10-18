@@ -219,9 +219,9 @@
 
                 statusP.textContent = "코드 실행 중...";
 
-                const pythonCode = `
+                const preamble = `
 import io, base64
-# Only patch matplotlib if it's imported
+__plots__ = []
 if 'matplotlib' in """${code}""":
     import matplotlib.pyplot as plt
     _old_show = plt.show
@@ -229,25 +229,25 @@ if 'matplotlib' in """${code}""":
         buf = io.BytesIO()
         plt.savefig(buf, format='png')
         buf.seek(0)
-        return base64.b64encode(buf.read()).decode('utf-8')
+        __plots__.append(base64.b64encode(buf.read()).decode('utf-8'))
+        plt.clf()
     plt.show = _new_show
-
-${code}
 `;
+                await pyodide.runPythonAsync(preamble);
 
-                let result = await pyodide.runPythonAsync(pythonCode);
+                let result = await pyodide.runPythonAsync(code);
 
-                if (result) {
-                    try {
-                        // Check if the result is a base64 string from our patched show()
-                        atob(result);
+                const plots = pyodide.globals.get('__plots__').toJs();
+                if (plots && plots.length > 0) {
+                    plots.forEach(plot_b64 => {
                         const img = document.createElement('img');
-                        img.src = 'data:image/png;base64,' + result;
+                        img.src = 'data:image/png;base64,' + plot_b64;
                         plotOutput.appendChild(img);
-                    } catch(e) {
-                        // Not a base64 string, print as text
-                        appendOutput(result.toString());
-                    }
+                    });
+                }
+
+                if (result !== undefined && result !== null) {
+                    appendOutput(result.toString());
                 }
 
             } catch (err) {
