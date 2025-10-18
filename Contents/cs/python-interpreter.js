@@ -15,6 +15,7 @@
             </div>
             <div class="output-panel">
                 <pre id="python-output"></pre>
+                <div id="plot-output"></div>
                 <p id="pyodide-status">Pyodide 로딩 중...</p>
             </div>
         </div>
@@ -69,7 +70,8 @@
         }
 
         #python-output {
-            flex: 1; /* Take all available space */
+            flex: 1;
+            min-height: 100px;
             background-color: #000; /* Terminal-like black background */
             color: #0f0; /* Green text for output */
             padding: 10px;
@@ -78,7 +80,17 @@
             white-space: pre-wrap; /* Preserve whitespace and wrap text */
             overflow-y: auto;
             border: 1px solid #333;
-            text-align: left; /* Ensure terminal-like left alignment */
+        }
+
+        #plot-output {
+            flex-shrink: 0;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #plot-output img {
+            max-width: 100%;
+            background-color: white;
         }
 
         #pyodide-status {
@@ -120,6 +132,7 @@
 
     const runBtn = document.getElementById("run-python-btn");
     const outputPre = document.getElementById("python-output");
+    const plotOutput = document.getElementById("plot-output");
     const statusP = document.getElementById("pyodide-status");
 
     let pyodide;
@@ -173,7 +186,7 @@
 
             cmPythonScript.onload = () => {
                 editor = CodeMirror(document.getElementById('codemirror-editor-container'), {
-                    value: "print('Hello, Pyodide!')\nprint(1 + 2)",
+                    value: "import numpy as np\nimport matplotlib.pyplot as plt\n\nx = np.linspace(0, 2 * np.pi, 100)\ny = np.sin(x)\n\nplt.plot(x, y)\nplt.title(\"Sine Wave\")\nplt.xlabel(\"X-axis\")\nplt.ylabel(\"Y-axis\")\nplt.grid(True)\n\n# To display the plot, call plt.show() at the end.\nplt.show()",
                     mode:  "python",
                     theme: "monokai",
                     lineNumbers: true
@@ -184,23 +197,59 @@
         };
 
         runBtn.onclick = async () => {
-            if (!pyodide) {
-                outputPre.textContent = "오류: Pyodide가 로드되지 않았습니다.";
+            if (!pyodide || !editor) {
+                outputPre.textContent = "오류: Pyodide 또는 에디터가 준비되지 않았습니다.";
                 return;
             }
-            if (!editor) {
-                outputPre.textContent = "오류: 에디터가 로드되지 않았습니다.";
-                return;
-            }
-            outputPre.textContent = ""; // Clear previous output
-            statusP.textContent = "코드 실행 중...";
+
+            outputPre.textContent = "";
+            plotOutput.innerHTML = "";
             runBtn.disabled = true;
+
             try {
                 const code = editor.getValue();
-                const result = await pyodide.runPythonAsync(code);
-                if (result !== undefined && result !== null && result.toString().trim() !== '') {
-                    appendOutput(result.toString());
+                const packages = [];
+                if (code.includes("numpy")) packages.push("numpy");
+                if (code.includes("matplotlib")) packages.push("matplotlib");
+
+                if (packages.length > 0) {
+                    statusP.textContent = `패키지 로딩 중: ${packages.join(', ')}...`;
+                    await pyodide.loadPackage(packages);
                 }
+
+                statusP.textContent = "코드 실행 중...";
+
+                const pythonCode = `
+import io, base64
+# Only patch matplotlib if it's imported
+if 'matplotlib' in """${code}""":
+    import matplotlib.pyplot as plt
+    _old_show = plt.show
+    def _new_show():
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png')
+        buf.seek(0)
+        return base64.b64encode(buf.read()).decode('utf-8')
+    plt.show = _new_show
+
+${code}
+`;
+
+                let result = await pyodide.runPythonAsync(pythonCode);
+
+                if (result) {
+                    try {
+                        // Check if the result is a base64 string from our patched show()
+                        atob(result);
+                        const img = document.createElement('img');
+                        img.src = 'data:image/png;base64,' + result;
+                        plotOutput.appendChild(img);
+                    } catch(e) {
+                        // Not a base64 string, print as text
+                        appendOutput(result.toString());
+                    }
+                }
+
             } catch (err) {
                 appendOutput(`오류: ${err}`);
                 console.error(err);
