@@ -10,8 +10,7 @@
     targetElement.innerHTML = `
         <div class="python-interpreter-container">
             <div class="editor-panel">
-                <textarea id="python-code-input" rows="15" placeholder="여기에 Python 코드를 입력하세요...">print('Hello, Pyodide!')
-print(1 + 2)</textarea>
+                <div id="codemirror-editor-container" style="flex: 1; overflow: hidden;"></div>
                 <button id="run-python-btn">실행</button>
             </div>
             <div class="output-panel">
@@ -47,17 +46,10 @@ print(1 + 2)</textarea>
             overflow: hidden;
         }
 
-        #python-code-input {
-            flex: 1; /* Take all available space */
-            width: 100%;
-            background-color: #1e1e1e;
-            color: #d4d4d4;
-            border: none;
-            padding: 10px;
+        .CodeMirror {
+            height: 100%;
             font-family: 'Consolas', 'Monaco', 'Ubuntu Mono', monospace;
             font-size: 14px;
-            resize: none; /* Disable textarea resize handle */
-            outline: none;
         }
 
         #run-python-btn {
@@ -86,6 +78,7 @@ print(1 + 2)</textarea>
             white-space: pre-wrap; /* Preserve whitespace and wrap text */
             overflow-y: auto;
             border: 1px solid #333;
+            text-align: left; /* Ensure terminal-like left alignment */
         }
 
         #pyodide-status {
@@ -113,39 +106,81 @@ print(1 + 2)</textarea>
     `;
     document.head.appendChild(style);
 
-    const codeInput = document.getElementById("python-code-input");
+    // Load CodeMirror CSS
+    const cmCss = document.createElement('link');
+    cmCss.rel = 'stylesheet';
+    cmCss.href = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css';
+    document.head.appendChild(cmCss);
+
+    const cmThemeCss = document.createElement('link');
+    cmThemeCss.rel = 'stylesheet';
+    cmThemeCss.href = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/theme/monokai.min.css';
+    document.head.appendChild(cmThemeCss);
+
+
     const runBtn = document.getElementById("run-python-btn");
     const outputPre = document.getElementById("python-output");
     const statusP = document.getElementById("pyodide-status");
 
     let pyodide;
+    let editor;
+    let pyodideReady = false;
+    let editorReady = false;
 
-    // Function to append output to the pre tag
+    function checkReady() {
+        if (pyodideReady && editorReady) {
+            statusP.textContent = "Pyodide 준비 완료!";
+            runBtn.disabled = false;
+        }
+    }
+
     function appendOutput(text) {
         outputPre.textContent += text + '\n';
         outputPre.scrollTop = outputPre.scrollHeight; // Scroll to bottom
     }
 
     try {
-        // Dynamically load pyodide.js from CDN
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js'; // CDN URL
-        document.head.appendChild(script);
+        // Load pyodide
+        const pyodideScript = document.createElement('script');
+        pyodideScript.src = 'https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js';
+        document.head.appendChild(pyodideScript);
 
-        script.onload = async () => {
+        pyodideScript.onload = async () => {
             statusP.textContent = "Pyodide 초기화 중...";
             pyodide = await window.loadPyodide({
                 indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/",
-                stdout: appendOutput, // Redirect stdout
-                stderr: appendOutput  // Redirect stderr
+                stdout: appendOutput,
+                stderr: appendOutput
             });
-            statusP.textContent = "Pyodide 준비 완료!";
-            runBtn.disabled = false;
+            pyodideReady = true;
+            checkReady();
         };
 
-        script.onerror = () => {
+        pyodideScript.onerror = () => {
             statusP.textContent = "Pyodide 로드 실패!";
             console.error("Failed to load pyodide.js from CDN");
+        };
+
+        // Load CodeMirror
+        const cmScript = document.createElement('script');
+        cmScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js';
+        document.head.appendChild(cmScript);
+
+        cmScript.onload = () => {
+            const cmPythonScript = document.createElement('script');
+            cmPythonScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/python/python.min.js';
+            document.head.appendChild(cmPythonScript);
+
+            cmPythonScript.onload = () => {
+                editor = CodeMirror(document.getElementById('codemirror-editor-container'), {
+                    value: "print('Hello, Pyodide!')\nprint(1 + 2)",
+                    mode:  "python",
+                    theme: "monokai",
+                    lineNumbers: true
+                });
+                editorReady = true;
+                checkReady();
+            };
         };
 
         runBtn.onclick = async () => {
@@ -153,12 +188,16 @@ print(1 + 2)</textarea>
                 outputPre.textContent = "오류: Pyodide가 로드되지 않았습니다.";
                 return;
             }
+            if (!editor) {
+                outputPre.textContent = "오류: 에디터가 로드되지 않았습니다.";
+                return;
+            }
             outputPre.textContent = ""; // Clear previous output
             statusP.textContent = "코드 실행 중...";
             runBtn.disabled = true;
             try {
-                const result = await pyodide.runPythonAsync(codeInput.value);
-                // Only display result if it's not undefined/null and not an empty string
+                const code = editor.getValue();
+                const result = await pyodide.runPythonAsync(code);
                 if (result !== undefined && result !== null && result.toString().trim() !== '') {
                     appendOutput(result.toString());
                 }
@@ -171,7 +210,7 @@ print(1 + 2)</textarea>
             }
         };
 
-        runBtn.disabled = true; // Disable until Pyodide is ready
+        runBtn.disabled = true; // Disable until Pyodide and CodeMirror are ready
 
     } catch (error) {
         statusP.textContent = "인터프리터 설정 중 오류 발생!";
