@@ -1,7 +1,25 @@
 :root {
-    --bg-color: #000;
-    --text-color: #fff;
-    --nav-height: 45px;
+    --bg: #f6f7f8;
+    --surface: rgba(255, 255, 255, 0.92);
+    --surface-strong: #ffffff;
+    --surface-tint: #f1f3f5;
+    --surface-dark: #121417;
+    --surface-deep: #0a0c0f;
+    --line: rgba(18, 20, 23, 0.1);
+    --line-strong: rgba(18, 20, 23, 0.18);
+    --text: #121417;
+    --muted: #66707a;
+    --accent: #0f62fe;
+    --accent-strong: #0043ce;
+    --accent-soft: rgba(15, 98, 254, 0.08);
+    --nav-height: 84px;
+    --container: min(1180px, calc(100vw - 48px));
+    --shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.08);
+    --shadow-md: 0 12px 28px rgba(15, 23, 42, 0.06);
+    --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
+    --radius-xl: 28px;
+    --radius-lg: 20px;
+    --radius-md: 14px;
 }
 
 * {
@@ -10,58 +28,156 @@
     box-sizing: border-box;
 }
 
-html, body {
-    height: 100%;
+html,
+body {
+    min-height: 100%;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    color: #333;
+    font-family: "Avenir Next", "Pretendard Variable", "Segoe UI", sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at top left, rgba(15, 98, 254, 0.06), transparent 22%),
+        linear-gradient(180deg, #fafbfb 0%, #f6f7f8 100%);
     display: flex;
     flex-direction: column;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(rgba(15, 23, 42, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px, 40px 40px;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.08), transparent 85%);
+}
+
+a {
+    color: inherit;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    color: inherit;
+}
+
+#app {
+    min-height: 100vh;
 }
 
 .content-wrapper {
-    flex-grow: 1;
+    flex: 1;
 }
 
-h1 {
-    margin-top: 0;
-    margin-bottom: 0;
+h1,
+h2,
+h3,
+h4 {
+    font-family: "Avenir Next", "Pretendard Variable", "Segoe UI", sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.035em;
 }
 
-.content {
-    padding: 100px 20px; /* 콘텐츠 패딩 설정 */
+p {
+    color: var(--muted);
 }
 
-.white-screen {
-    height: 300vh;
-    background-color: rgb(255, 255, 255);
+.page-shell {
+    width: var(--container);
+    margin: 0 auto;
+    padding: 48px 0 96px;
 }
 
+.glass-panel {
+    background: var(--surface);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(10px);
+}
 
-@media (max-width: 50vw) {
-    .nav-menu {
-        display: none;
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.section-heading > div {
+    display: grid;
+    gap: 10px;
+}
+
+.section-heading h2 {
+    font-size: clamp(2.1rem, 4vw, 3.6rem);
+    line-height: 0.98;
+}
+
+.section-heading p {
+    max-width: 520px;
+    font-size: 1rem;
+}
+
+.section-kicker {
+    font-size: 0.82rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-strong);
+    font-weight: 700;
+}
+
+.soft-card {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(246, 247, 248, 0.98));
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    box-shadow: var(--shadow-sm);
+}
+
+.slide-panel {
+    background: linear-gradient(180deg, #ffffff, var(--surface-tint));
+    border: 1px solid rgba(255, 255, 255, 0.94);
+    box-shadow: var(--shadow-md);
+}
+
+.page-intro {
+    display: grid;
+    gap: 16px;
+    padding: 28px;
+    border-radius: var(--radius-xl);
+}
+
+.page-intro h1 {
+    font-size: clamp(2.6rem, 5vw, 4.8rem);
+    line-height: 0.92;
+    max-width: 12ch;
+}
+
+.page-intro p {
+    max-width: 62ch;
+    font-size: 1.02rem;
+}
+
+@media (max-width: 900px) {
+    :root {
+        --nav-height: 76px;
+        --container: min(100vw - 28px, 1180px);
+    }
+
+    .page-shell {
+        padding: 32px 0 72px;
+    }
+
+    .section-heading {
         flex-direction: column;
-        position: fixed;
-        top: var(--nav-height);
-        left: 0;
-        width: 100%;
-        background-color: var(--bg-color);
-        padding: 10px 0;
-    }
-
-    .nav-menu.open {
-        display: flex;
-    }
-
-    .hamburger {
-        display: flex;
-    }
-
-    .content {
-        padding: 100px 20px;
-        margin-top: var(--nav-height);
+        align-items: start;
     }
 }
