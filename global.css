@@ -99,7 +99,7 @@ p {
 .page-shell {
     width: var(--container);
     margin: 0 auto;
-    padding: 48px 0 96px;
+    padding: 120px 0 96px; /* increased to prevent overlap with fixed header */
 }
 
 .glass-panel {
@@ -177,7 +177,7 @@ p {
     }
 
     .page-shell {
-        padding: 32px 0 72px;
+        padding: 100px 0 72px; /* increased to prevent overlap with fixed header on mobile */
     }
 
     .section-heading {
