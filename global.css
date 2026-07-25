@@ -1,5 +1,7 @@
 :root {
+    /* ── Existing Base Tokens ── */
     --bg: #f6f7f8;
+    --bg-color: #f6f7f8;
     --surface: rgba(255, 255, 255, 0.92);
     --surface-strong: #ffffff;
     --surface-tint: #f1f3f5;
@@ -14,12 +16,37 @@
     --accent-soft: rgba(15, 98, 254, 0.08);
     --nav-height: 84px;
     --container: min(1180px, calc(100vw - 48px));
-    --shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.08);
-    --shadow-md: 0 12px 28px rgba(15, 23, 42, 0.06);
-    --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
+
+    /* ── Material Design 3 Semantic Tokens (Stitch) ── */
+    --primary: #0f62fe;
+    --on-primary: #ffffff;
+    --primary-container: #d6e3ff;
+    --secondary: #6366f1;
+    --tertiary: #8b5cf6;
+    --surface-container: #f0f1f3;
+    --surface-container-high: #eaecee;
+    --surface-low: #f6f7f8;
+    --outline: rgba(18, 20, 23, 0.14);
+    --on-surface-variant: #44474e;
+
+    /* ── Spacing Scale ── */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 56px;
+
+    /* ── Refined Shadows ── */
+    --shadow-lg: 0 20px 48px rgba(15, 23, 42, 0.07), 0 8px 16px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 10px 24px rgba(15, 23, 42, 0.05), 0 4px 8px rgba(15, 23, 42, 0.03);
+    --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.03);
+
+    /* ── Radii ── */
     --radius-xl: 28px;
     --radius-lg: 20px;
     --radius-md: 14px;
+    --radius-sm: 8px;
 }
 
 * {
